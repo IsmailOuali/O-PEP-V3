@@ -1,7 +1,7 @@
 Lien de presentation: 
 
 
-Lien de trello:
+Lien de Jira:
 
 
 Lien de diagrammes:
