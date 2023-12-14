@@ -1,11 +1,14 @@
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$database = "opep3";
 
-$host = 'localhost';
-$usr = 'root';
-$pwd - 'root';
-$db = 'O-PEP-V3';
+$conn = new mysqli($servername, $username, $password, $database);
 
-
-$conn = mysqli_connect($host, $usr, $pwd, $db) or die;
+// Vérifier la connexion
+if ($conn->connect_error) {
+    die("Échec de la connexion à la base de données : " . $conn->connect_error);
+}
 
 ?>
