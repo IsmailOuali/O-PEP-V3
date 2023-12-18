@@ -2,7 +2,7 @@
 
 include 'config.php';
 //-------------------------------- Connection-----------------------------------------
-$tabl=array();
+$newpdo = new Databaseconnection();
 if (isset($_POST['submitConn'])) {
 
     session_start();
@@ -14,7 +14,7 @@ if (isset($_POST['submitConn'])) {
         FROM utilisateurs u
         JOIN roles r ON u.idUtl = r.idUtl
         WHERE u.emailUtl = '$emailConn' AND u.mdpUtl = '$mdpConn'";
-        $result = $conn->query($query);
+        $result = $newpdo->conn->query($query);
 
     
         
