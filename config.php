@@ -3,7 +3,7 @@
 $server = 'localhost';
 $usr = 'root';
 $pwd = 'root';
-$db = 'opep3';
+$db = 'opep-3';
 
 
 
