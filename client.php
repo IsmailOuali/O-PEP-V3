@@ -1,398 +1,258 @@
-
-
-<?php include("traitement.php"); 
-
+<?php
+include 'config.php';
+$sqlstore = "SELECT * from plante JOIN categorie where plante.id_cat = categorie.id";
+$resultstore = mysqli_query($conn, $sqlstore);
 session_start();
-$userId = $_SESSION['idUtl'];
-$reqet="SELECT * FROM panier JOIN plantes ON panier.idPlante = plantes.idPlante WHERE idUtl= $userId";
-$result2 = $conn->query($reqet);
-$count = mysqli_num_rows($result2);
-
-if (isset($_POST['addToCart'])) {
-    
-    $plantId = $_POST['addToCart'];
-
-    $insertQuery = "INSERT INTO panier (idUtl, idPlante, quantite) VALUES ('$userId','$plantId',1)";
-    $result = $conn->query($insertQuery);
-   
-    if ($result) {
-        // rje3 l page li 9bel
-        header('location:' . $_SERVER['HTTP_REFERER']);
-        exit;
-    } else {
-        echo "<script>alert('erreur d'ajout')</script>";
-    }
+if ($_SESSION['status'] != 'client') {
+    header('Location: index.php');
 }
 
-?>
 
+$i = 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="styleClient.css">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>O-PEP store</title>
+    <meta name="description" content="Free open source Tailwind CSS Store template">
+    <meta name="keywords"
+        content="tailwind,tailwindcss,tailwind css,css,starter template,free template,store template, shop layout, minimal, monochrome, minimalistic, theme, nordic">
+
+    <script src="https://cdn.tailwindcss.com"> </script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/riva-dashboard-tailwind/riva-dashboard.css">
+
+
+
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:200,400&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #132A13;
-            color: aliceblue;
-            margin-top: 2rem;
-        }
-
-        .sec1 h1 {
-            font-size: 3.5vw;
-            width: 24vw;
+        #category {
             color: black;
         }
 
-        .sec1 p {
-            font-size: 1.2vw;
-            margin-top: 2rem;
-            color: black;
-        }
-
-        .sec1 button {
-            color: white;
-            background-color: transparent;
-            border: 2px solid white;
-            width: 10vw;
-            margin-top: 2rem;
-        }
-
-        .sec3 .card {
-            height: 26vw;
-            margin-bottom: 1.5rem;
-            color: black; 
-            max-width: 19.5rem;
-            background-color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 20px;
-        }
-
-        .card-img-custom {
-            width: 40%;
-            height: 10vw;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .card-body {
-            height: 100%;
-        }
-
-        .card-text {
-            margin-bottom: 1rem; 
-            color: #4F772D; 
-            text-align: left;
-        }
-
-        .card-title {
-            color: #4F772D;
-            text-align: left; 
-        }
-
-        .pagination {
-            justify-content: center;
-
-
-        }
-        .count{
-            color: white;
-            padding: 0px 6px;
-            background-color: red;
-            border-radius: 40px;
-        }
-        .panier{
-            position: fixed;
-            right: 40px;
-        }
-        /* nav */ 
-        nav{
-            
-            z-index: 1000;
-            height: 50px;
-        }
-        .nav__logo img {
-            width: 120px;
-            padding-top: 10px;
-        }
-        .search {
-            position: relative;
-            width: 26%;
-            left: 22%;
-        }
-        .nav__menu{
-            position: absolute;
-            right:10rem;
-    }
-
-        .nav__list{
-        padding-top: 25px;
-        list-style: none;
-        display: flex;
-        gap: 3rem;
-        align-items: center;
-       
-        }
-        .nav__list a{
-            color: white;
-            cursor: pointer;
-        }
-        .nav__list a :hover{
-            color: green;
-            
-        }
-        .nav__list .nav__item a :hover{
-            color: green;
-        }
-        .button--flex {
-        display: inline-flex;
-        align-items: center;
-        column-gap: 0.5rem;
-}
-
-        .navbar__button {
-            position: absolute;
-            background-color: red;
-            border-radius: 0.35rem;
-            font-size: 1.25rem;
-        }
-
-        .search form input {
-            margin-top: 20px;
+        .filter {
             width: 100%;
-            height: 40px;
-            border-radius: 40px 0 0 40px ;
-            padding: 5px 20px;
-            padding-left: 35px;
-            font-size: 18px;
-            outline: none;
-            border: 1px solid white;
-        }
-        .searchbtn{
-
-            border: 1px solid white;
-        }
-        .search i {
-            color: #132A13;
-            position: absolute;
-            top: 26px;
-            left: 10px;
-            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
         }
 
-        .button--flex {
-        display: inline-flex;
-        background-color: #132A13;
-        align-items: center;
-        column-gap: 0.5rem;
-        border-radius: 40px 0 0 40px ;
-        
-        }
-        .col img{
-            margin-top: 40px;
+        .filter form {
+            width: 45%;
         }
 
-        
+        .selectclass {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .selectclass input {
+            width: 13%;
+        }
     </style>
 
+
 </head>
-<body>
-    <header style="background-color:  #ffffff50; height:80px; width:100%; position:absolute;  top:0;">
-        <nav class="nav container" >
-                <a href="client.php" class="nav__logo">
-                    <img src="plantes/logo.png" alt="logo">
-                </a> 
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav__list">
-                        <li >
-                            <a href="client.php"  style="font-size: 20px ; ">Home</a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="blog.php"  style="font-size: 20px;">Blog</a>
-                        </li>
+
+<body class=" text-gray-600">
+
+    <!--Nav-->
+    <nav id="header" class="w-full z-30 top-0 py-1">
+        <div class="bg-lime-600 w-full rounded-3xl container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
+
+            <label for="menu-toggle" class="cursor-pointer md:hidden block">
+                <svg class="fill-current text-gray-900" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    viewBox="0 0 20 20">
+                    <title>menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+                </svg>
+            </label>
+            <input class="hidden" type="checkbox" id="menu-toggle" />
 
 
-                      <li >
-                    <a href="panier.php" class="d-flex">
-                        <svg xmlns="http://www.w3.org/2000/svg"  width="30" height="30" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                        </svg>
-                        <p class=" count"><?php echo $count ?></p>
-                    </a> 
-                      </li>
-                                               <!-- log out -->
-                                               <li>
-                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-                          <a href="index.php">
-                          <i class="ri-logout-box-r-line" style="font-size:27px;"></i>
-                        </a>
-                        </form>
-                      </li>
-                    </ul>  
+            <div class="order-1 md:order-2">
+                <a class="flex items-center tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
+                    href="#">
+                    <img src="images/les-plantes.png" class="w-10 h-10 p-2" alt="">
+                    O'PEP
+                </a>
+            </div>
 
-                    <!-- <div class="logo" style="height: 40px;display: flex;justify-content: space-between; padding:40px ; margin-top:0px; color:black"></div> -->
+            <div class="order-2 md:order-3 flex items-center" id="nav-content">
 
-                    </div>   
-            </nav>
-    </header>
-    <section class="sec1" style="margin-top: 80px;">
-        
-        <div class="container text-center">
-            <div class="row">
-                <div class="col" style="margin-top: 7vw;">
-                    <h1 class="text-left" style="color:white">
-                        Grow Your Own <span style="color: #4F772D;">Favourite</span> plant
-                    </h1>
-                    <p class="mb-4 opacity-70 text-left mt-2" style="color:white">
-                        We help you plant your first plant and create your own beautiful garden with our plant collection.
-                    </p>
-                    <button type="button" class="btn btn-block mb-4 btn-hover">
-                        Learn more
-                    </button>
-                </div>
-                <div class="col">
-                    <img src="plantes/o.png" alt="Image de plantes">
+                <a class="inline-block no-underline hover:text-black" href="#">
+                    <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24">
+                        <circle fill="none" cx="12" cy="7" r="3" />
+                        <path   
+                            d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5S14.757 2 12 2zM12 10c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3S13.654 10 12 10zM21 21v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z" />
+                    </svg>
+                </a>
+
+
+                <div tabsindex="0" class="group relative inline-block p-5">
+                    <a href="page-panier.php"
+                        class="border-gray-950 border-solid  border-2 rounded-full   text-black px-8 py-2 focus:outline-none">
+                        Panier
+                    </a>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- ... ________________ ... -->
-    <section class="sec2 d-flex justify-content-center mt-5">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" style="border:1px solid white; border-radius:20px; width:37%;">
-            <div class="d-flex" style="gap:20px">
-                <form method="get"  class="d-flex justify-content-center" role="search">
-                    <a class="navbar-brand" href="?view_all" style="color:white">View All</a>
+    </nav>
 
-                    <div style="display: flex; ">
-                    <select name="categorie" id="categorieSelect" style="border-radius: 5px; height:38px ; background-color: transparent; color:white" onchange="submitForm()">
-                        <option style="color: black" value="all">Toutes les catégories</option>
-                        <?php
-                        $categoriesQuery = $conn->query("SELECT DISTINCT idCategorie, nomCategorie FROM categories");
-                        $categories = $categoriesQuery->fetch_all(MYSQLI_ASSOC);
-                        foreach ($categories as $category) {
-                            echo '<option style="color: black" value="' . $category['idCategorie'] . '">' . $category['nomCategorie'] . '</option>';
-                        }
-                        ?>
-                    </select>
+    <section class=" py-8">
+
+        <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+                <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
+
+                    <div class="filter" id="store-nav-content">
+
+                        <form action="" method="post">
+                            <div class="p-5">
+                                <input
+                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="text" name="searchinput" placeholder="Entrer un nom">
+                                <input
+                                    class="text-white bg-green-700 mt-1 hover:bg-green-800 rounded-full text-sm px-5 py-2.5 text-center"
+                                    type="submit" name="Search" value="Search">
+                            </div>
+                            <div class="selectclass p-5">
+                                <a class="inline-block no-underline hover:text-black" href="#">
+                                    <select name="select" id="category"
+                                        class="border border-gray-300 text text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        Select
+                                        <?php
+
+                                        $sqlCtg = "SELECT * from categorie";
+                                        $reqCtg = mysqli_query($conn, $sqlCtg);
+                                        while ($row = mysqli_fetch_row($reqCtg)) {
+                                            ?>
+                                            <option value="<?php echo $row['0'] ?>">
+                                                <?php echo $row['1'] ?>
+                                            </option>
+                                            <?php
+                                        }
+
+                                        ?>
+                                    </select>
+                                </a>
+
+                                <input
+                                    class="text-white bg-green-700 mt-1 hover:bg-green-800 rounded-full text-sm px-5 py-2.5 text-center"
+                                    type="submit" value="filter" name="filter">
+                            </div>
+                        </form>
+                        <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
+                            href="#">
+                            Store
+                        </a>
 
                     </div>
-                </form>
-                <form method="get" class="d-flex justify-content-center">
-                    <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search" id="searchInput" style="height: 40px;background-color: transparent; color:white;border-radius: 5px ;">
-                    <button class=" searchbtn btn-success"name="search_but" type="sumbit" style=" border-radius: 0 40px  40px 0; height:40px ; background-color: transparent">GO</button>
-                </form>
+                </div>
 
-            </div>
-        </nav>
-    </section>
-    <section class="sec3">
-        <div class="container mt-5">
             <?php
-            $limit = 6;
-            $page = isset($_GET['page']) ? $_GET['page'] : 1;
-            $start = ($page - 1) * $limit;
 
-            // Vérifie si le formulaire est soumis
-            if (isset($_GET['view_all'])) {
-                $plantesQuery = $conn->query("SELECT * FROM plantes LIMIT $start, $limit");
-            } elseif(isset($_GET['search_but'])) {
-                $nomPlante = $_GET['search'];
-                $plantesQuery = $conn->query("SELECT * FROM plantes WHERE nomPlante LIKE '%$nomPlante%'");
-                
-            }else{
-                // Récupère la catégorie sélectionnée
-                $categoryFilter = (isset($_GET['categorie']) && $_GET['categorie'] != 'all') ? "WHERE idCategorie = {$_GET['categorie']}" : "";
 
-                // Mettez à jour la requête pour inclure le filtre de catégorie
-                $plantesQuery = $conn->query("SELECT * FROM plantes $categoryFilter LIMIT $start, $limit");
-            }
-
-            $counter = 0;
-            if(mysqli_num_rows($plantesQuery) > 0){
-                while ($plante = $plantesQuery->fetch_assoc()) {
-                    if ($counter % 3 == 0) {
-                        echo '<div class="row">';
-                    }
-                    echo '<div class="col-md-4 mb-4">';
-                    echo '<div class="card">';
-                    echo '<div class="d-flex justify-content-center">';
-                    echo '<img " src="' . $plante['imagePlante'] . '" class="card-img-top card-img-custom" alt="' . $plante['nomPlante'] . '">';
-                    echo '</div>';
-                    echo '<div class="card-body">';
-                    echo '<h5 class="card-title">' . $plante['nomPlante'] . '</h5>';
-                    echo '<hr>';
-                    echo '<div class="text-left">';
-                    echo '<p class="card-text mb-2"><strong>Description:</strong> <span style="color:black;">' . $plante['descriptionPlante'] . '</span></p>';
-                    echo '<p class="card-text mb-2"><strong>Price:</strong> <span style="color:black;">' . $plante['prix'] . 'DH </span></p>';
-                    echo '<p class="card-text mb-2"><strong>Stock:</strong> <span style="color:black;">' . $plante['stock'] . '</span></p>';
-                    echo '</div>';
-                    echo '<div class="d-flex justify-content-center">';
-                    //---------------------------------- form-btn--------------------------------------
-                    echo '<form method="POST" >';
-                    echo '<button class="btn btn-success panier-btn mt-2" name="addToCart" value="' . $plante['idPlante'] . '">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
-                    <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z"/>
-                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                  </svg>
-                        Ajouter
-                    </button>';
-                    echo '</form>';
-                    //fin
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-    
-                    if ($counter % 3 == 2) {
-                        echo '</div>';
-                    }   
-    
-                    $counter++;
+            if (@$_POST['filter']) {
+                $catid = $_POST['select'];
+                $sqlshowcat = "SELECT * from plante where id_cat = $catid";
+                $reqshowcat = mysqli_query($conn, $sqlshowcat);
+                if (!$reqshowcat) {
+                    die('Error');
                 }
-                if ($counter % 3 != 0) {
-                    echo '</div>';
-                }
-            }else{
-                echo "<script>alert('La plante n existe pas')</script>";
-            }
-            
 
-           
+                while ($showcat = mysqli_fetch_assoc($reqshowcat)) {
+                    ?>
+                    <div class="w-3/5 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                        <a href="#">
+                            <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $showcat['img'] ?>">
+                            <div class="pt-3 flex items-center justify-between">
+                                <p class="">
+                                    <?php echo $showcat['nom'] ?>
+                                </p>
+                                <p class="pt-1 text-gray-900">$
+                                    <?php echo $showcat['Prix'] ?>
+                                </p>
+                                <a href="panier.php?id=<?php echo $rowstore['0'] ?>"
+                                class="w-3/5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Ajouter
+                                au panier</a>
+                        </a>
+                    </div>
+                    <?php
+                }
+
+
+            }
+            else if (@$_POST['Search']) {
+                $input = $_POST['searchinput'];
+                $sql = "SELECT * from plante where nom like '%$input%'";
+                $reqsearch = mysqli_query($conn, $sql);
+                if (!$reqsearch) {
+                    die;
+                }
+                while ($result = mysqli_fetch_row($reqsearch)) {
+                    ?>
+                    <div class="w-40 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                        <a href="#">
+                            <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $result['7'] ?>">
+                            <div class="pt-3 flex items-center justify-between">
+                                <p class="">
+                                    <?php echo $result['1'] ?>
+                                </p>
+                            </div>
+                            <p class="pt-1 text-gray-900">$
+                                <?php echo $result['5'] ?>
+                            </p>
+                            <a href="panier.php?id=<?php echo $result[0] ?>"
+                                class="w-3/5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Ajouter
+                                au panier</a>
+                        </a>
+                    </div>
+                    <?php
+                }
+
+            }
+            else {
+                while ($rowstore = mysqli_fetch_row($resultstore)) {
+
+                    ?>
+                    <div class="w-40 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                        <a href="#">
+                            <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $rowstore['7'] ?>">
+                            <div class="pt-3 flex items-center justify-between">
+                                <p class="">
+                                    <?php echo $rowstore['1'] ?>
+                                </p>
+                                <p>
+                                    <?php echo $rowstore['9'] ?>
+                                </p>
+                            </div>
+                            <p class="pt-1 text-gray-900">$
+                                <?php echo $rowstore['5'] ?>
+                            </p>
+                            <a href="panier.php?id=<?php echo $rowstore['0'] ?>"
+                                class="w-3/5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Ajouter
+                                au panier</a>
+
+
+
+
+                        </a>
+                    </div>
+                    <?php
+                }
+                $i += 1;
+            }
             ?>
+
         </div>
 
-
-        <!-- ... (Pagination) ... -->
-
-        <?php
-        $result = $conn->query("SELECT COUNT(idPlante) AS total FROM plantes");
-        $row = $result->fetch_assoc();
-        $total_pages = ceil($row["total"] / $limit);
-
-        echo '<nav aria-label="Page navigation example">';
-        echo '<ul class="pagination">';
-        for ($i = 1; $i <= $total_pages; $i++) {
-            echo '<li class="page-item"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
-        }
-        echo '</ul>';
-        echo '</nav>';
-        ?>
     </section>
 
-    <script>
-    function submitForm() {
-        document.getElementById('categorieSelect').form.submit();
-    }
-        function searchPlants() {
-        document.getElementById('categorieSelect').form.submit();
-    }
-    </script>
-    
-</body>
-</html>
 
+
+
+</body>
+
+</html>

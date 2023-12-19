@@ -1,21 +1,30 @@
 <?php
 
 include 'config.php';
-//-------------------------------- INSCRIPTION-----------------------------------------
-if (isset($_POST['submitRole'])) {
-    $role = $_POST["role"];
-    $idUtilisateur = $_GET['id']; // Récupérer l'idUtl depuis l'URL
+session_start();
 
-    if (!empty($role) && !empty($idUtilisateur)) {
-        $query = "INSERT INTO roles (nomRole, idUtl) VALUES ('$role', $idUtilisateur)";
-        $result = $conn->query($query);
-        header("Location: index.php");
-    }
+$id = $_SESSION['id'];
+
+if (@$_POST['Cbtn']) {
+    $sqlClient = "UPDATE users SET id_role = 1 where id = $id";
+    $reqClient = mysqli_query($conn, $sqlClient);
+    $sqladd = "INSERT into panier values(NULL, '$id')";
+    $reqadd = mysqli_query($conn, $sqladd);
+
+    $sqllst = "SELECT LAST_INSERT_ID()";
+    $reqlst = mysqli_query($conn, $sqllst);
+    $resultlst = mysqli_fetch_row($reqlst);
+    $_SESSION['panier'] = $resultlst[0];
+    $_SESSION['status'] = 'client';
+    header('Location: client.php');
+    
 }
-
-
-
-
+else if(@$_POST['Abtn']){
+    $sqlAdmin = "UPDATE users Set id_role = 2 where id = $id";
+    $reqAdmin =  mysqli_query($conn, $sqlAdmin);
+    $_SESSION['status'] = 'admin';
+    header('Location: nav-admin.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,55 +33,29 @@ if (isset($_POST['submitRole'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <title>Roles</title>
 </head>
 
-<body style="background-color: #31572C  ">
-    <section class="sec1 ">
-        <div class="overlay" id="overlay"></div>
-        <!-- Section: Design Block -->
-        <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-            <div class="row gx-lg-5 align-items-center mb-5 mt-5">
-                <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color:aliceblue; font-size: 3.2vw;">
-                        The best offer <br />
-                    </h1>
-                    <p class="mb-4 opacity-70" style="color:aliceblue; font-size: 1.2vw;">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                        ab ipsum nisi dolorem modi. Quos?
-                    </p>
-                </div>
+<body>
+    <div class="role-countainer pt-20 pr-20 mr-20 flex flex-col space-y-4 space-x-10">
 
-                <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-                    <div class="card bg-glass" style="width: 28vw;">
-                        <div class="card-body px-4 py-5 px-md-5">
+        <form action="" method="post">
+            <p class="m-10 text-lg font-bold"> Choose a role:</p>
+            <input type="submit" name="Cbtn" id="clientBtn" value="Sign up as Client"
+                class="m-10 w-3/5 mt-10 h-12 px-6 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
 
-                            <!-- --------------------------------------------------Form_Role -------------------------------------------->
-                            <form  method="post" class="d-flex  flex-column   justify-content-center">
-                            <label for="role">Sélectionnez un rôle :</label>
-                            <select name="role" id="role" style="height: 2.5VW;">
-                                <option value="client">Client</option>
-                                <option value="admin">Admin</option>
-                            </select>
 
-                            <button type="submit" name="submitRole" class="btn btn-block mb-4 mt-4" style="color:white; background-color: #31572C; width: 12VW">Terminer</button>
-                        </form>
-                            <!-- ------------------------------------------------------Fin ------------------------------------------------------------->
+            <input type="submit" name="Abtn" id="AdminBtn" value="Sign up as Admin"
+                class="m-10 w-3/5 font-bold	 h-12 px-6 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+            
+        </form>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="javascripte.js"></script>
+
+
 </body>
 
 </html>
