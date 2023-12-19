@@ -1,34 +1,4 @@
-<?php
-include 'config.php';
-session_start();
 
-if (@$_POST['Loginbtn']) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $sql = "SELECT * from users WHERE Email = '$email' AND Pwd = '$password'";
-    $req = mysqli_query($conn, $sql);
-    $log = mysqli_fetch_row($req);
-
-    if ($log == 0) {
-        echo "Email ou mot de passe incorecte";
-    } else {
-        if ($log['5'] == 1) {
-            header('Location: client.php');
-            $id = $log['0'];
-            $sql1 = "SELECT form panier where id_user = '$id'";
-            $req1 = mysqli_query($conn, $sql1);
-            $result = mysqli_fetch_row($req1);
-            $_SESSION['panier'] = $result[0];
-            $_SESSION['status'] = 'client';
-            $_SESSION['id'] = $id;
-        } else if ($log['5'] == 2) {
-            header('Location: nav-admin.php');
-        }
-    }
-}
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +22,7 @@ if (@$_POST['Loginbtn']) {
         <div class="bg-[#4ABB29] px-8 py-6 mt-4 text-left">
 
             <h3 class="text-2xl font-bold text-center">Login to your account</h3>
-            <form method="post" action="">
+            <form method="post" action="controller/log-in.php">
                 <div class="mt-4 ">
                     <div>
                         <label class="block" for="email">Email<label>

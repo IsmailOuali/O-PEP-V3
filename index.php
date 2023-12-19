@@ -1,42 +1,3 @@
-<?php
-include 'config.php';
-
-$pdo = new DBconnection();
-
-
-if (@$_POST['RegisterBtn']) {
-    $Fname = $_POST['Fname'];
-    $Usrname = $_POST['Usrname'];
-    $Email = $_POST['Email'];
-    $Pwd = $_POST['Pwd'];
-
-    // $sqlcheck = "SELECT * from users where Email = '$Email'";
-
-    // $req = mysqli_query($conn, $sqlcheck);
-    // $log = mysqli_fetch_row($req);
-
-    // if ($log){
-    //     echo 'You already have an account';
-    // }else{   
-    //     $sql = "INSERT into users (Fullname, Username, Email, Pwd) values('$Fname', '$Usrname', '$Email', '$Pwd')";
-    //     $req = mysqli_query($conn, $sql);
-    //     $sql2 = "SELECT LAST_INSERT_ID()";
-    //     $req2 = mysqli_query($conn, $sql2);
-    //     $row = mysqli_fetch_row($req2);
-    //     session_start();
-    //     $_SESSION['id'] = $row[0];
-    //     header('Location: role.php');
-    // }
-    $sql = "INSERT INTO users (Fullname, Username, Email, Pwd) VALUES (:Fname, :Usrname, :Email, :Pwd')";
-    $stmt = $pdo->connection()->prepare($sql);
-
-    $stmt = $pdo->connection()->execute(['Fname' => $Fname, 'Usrname' => $Usrname, 'Email' => $Email, 'Pwd' => $Pwd]);
-    
-    
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,7 +20,7 @@ if (@$_POST['RegisterBtn']) {
 
     <section class="bg-[#4ABB29] p-8 rounded shadow-md w-96">
         <h1 class="text-2xl font-bold mb-4">Sign up</h1>
-        <form method="post" action=''>
+        <form method="post" action='controller/signup.php'>
             <div class="mb-4">
                 <label class="block text-sm font-semibold text-gray-600">Full Name</label>
                 <input type="text" name="Fname" class="mt-1 p-2 w-full border rounded-md" placeholder="">

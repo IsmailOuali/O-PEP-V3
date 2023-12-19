@@ -40,11 +40,32 @@ class User{
         $sql->execute();
 
         if ($sql->rowCount() > 0){
-            return False;
+            return false;
         }
         return true;
     }
+    
+    public function login($Email, $Pwd){
+        $sql = DBconnection::connection()->prepare("SELECT * FROM users WHERE Email = :Email AND Pwd = :Pwd");
+        $sql->bindParam(':Email', $Email);
+        $sql->bindParam(':Pwd', $Pwd);
+        $sql->execute();
+        
+        if($sql->rowCount() == 0){
+            die('Cette utilsateur n exsiste pas');
+           
+        }else{
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            if($result['role'] == 1){
+                header('Location: ../nav-admin.php');
+            }
+            else if ($result['role'] == 2){
+                header ('Location: ../client.php');
+            } 
+            return $result;           
+        }
+
+      
+    }
 }
-
-
 ?>
