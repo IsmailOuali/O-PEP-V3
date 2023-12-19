@@ -76,6 +76,12 @@ if (@$_POST['RegisterBtn']) {
                 <label class="block text-sm font-semibold text-gray-600">Password</label>
                 <input type="password" name="Pwd" class="mt-1 p-2 w-full border rounded-md" placeholder="">
             </div>
+            <div class="mb-4">
+                <select class="mt-1 p-2 w-full border rounded-md" name="role">
+                    <option value="1">Admin</option>
+                    <option value="2">Client</option>
+                </select>
+            </div>
             <input type="submit" name="RegisterBtn" value="Register" id="Register"
                 class="bg-[#184F07] text-white p-2 rounded-md cursor-pointer">
         </form>
