@@ -1,30 +1,38 @@
 <?php
 include 'config.php';
 
+$pdo = new DBconnection();
+
+
 if (@$_POST['RegisterBtn']) {
     $Fname = $_POST['Fname'];
     $Usrname = $_POST['Usrname'];
     $Email = $_POST['Email'];
     $Pwd = $_POST['Pwd'];
 
-    $sqlcheck = "SELECT * from users where Email = '$Email'";
+    // $sqlcheck = "SELECT * from users where Email = '$Email'";
 
-    $req = mysqli_query($conn, $sqlcheck);
-    $log = mysqli_fetch_row($req);
+    // $req = mysqli_query($conn, $sqlcheck);
+    // $log = mysqli_fetch_row($req);
 
-    if ($log){
-        echo 'You already have an account';
-    }else{   
-        $sql = "INSERT into users (Fullname, Username, Email, Pwd) values('$Fname', '$Usrname', '$Email', '$Pwd')";
-        $req = mysqli_query($conn, $sql);
-        $sql2 = "SELECT LAST_INSERT_ID()";
-        $req2 = mysqli_query($conn, $sql2);
-        $row = mysqli_fetch_row($req2);
-        session_start();
-        $_SESSION['id'] = $row[0];
-        header('Location: role.php');
-    }
+    // if ($log){
+    //     echo 'You already have an account';
+    // }else{   
+    //     $sql = "INSERT into users (Fullname, Username, Email, Pwd) values('$Fname', '$Usrname', '$Email', '$Pwd')";
+    //     $req = mysqli_query($conn, $sql);
+    //     $sql2 = "SELECT LAST_INSERT_ID()";
+    //     $req2 = mysqli_query($conn, $sql2);
+    //     $row = mysqli_fetch_row($req2);
+    //     session_start();
+    //     $_SESSION['id'] = $row[0];
+    //     header('Location: role.php');
+    // }
+    $sql = "INSERT INTO users (Fullname, Username, Email, Pwd) VALUES (:Fname, :Usrname, :Email, :Pwd')";
+    $stmt = $pdo->connection()->prepare($sql);
 
+    $stmt = $pdo->connection()->execute(['Fname' => $Fname, 'Usrname' => $Usrname, 'Email' => $Email, 'Pwd' => $Pwd]);
+    
+    
 }
 ?>
 

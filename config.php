@@ -1,10 +1,31 @@
 <?php
-
-$server = 'localhost';
-$usr = 'root';
-$pwd = 'root';
-$db = 'opep-3';
-
+define("dbhost",'localhost');
+define("dbusr",'root');
+define("dbpwd",'root');
+define("db",'opep-3');
 
 
-$conn = mysqli_connect($server, $usr, $pwd, $db) or die('ERROR IN MY SQLI CONNECT');
+class DBconnection{
+
+    public function __construct(){
+          
+    }
+
+    
+    public static function connection(){
+
+        
+        
+        try{
+            $conn = new PDO("mysql:host" . dbhost . ";db=" . db, dbusr, dbpwd);
+            echo 'allo';
+            return $conn;
+        }
+        catch(PDOException $e){
+            echo "DB xonnection failed" . $e->getMessage();
+        }
+    }
+    
+}
+
+
