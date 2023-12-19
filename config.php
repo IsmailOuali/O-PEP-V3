@@ -17,8 +17,9 @@ class DBconnection{
         
         
         try{
-            $conn = new PDO("mysql:host" . dbhost . ";db=" . db, dbusr, dbpwd);
-            echo 'allo';
+            $conn = new PDO("mysql:host=" . dbhost . ";dbname=" . db, dbusr, dbpwd);
+            $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+
             return $conn;
         }
         catch(PDOException $e){
