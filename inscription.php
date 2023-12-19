@@ -3,24 +3,25 @@
 include("config.php") ;
 
 //-------------------------------- INSCRIPTION-----------------------------------------
-if (isset($_POST['submitInsc'])) {
+// if (isset($_POST['submitInsc'])) {
 
-    $nom = $_POST["nomInsc"];
-    $prenom = $_POST["prenomInsc"];
-    $email = $_POST["emailInsc"];
-    $mdp = $_POST["mdpInsc"];
+//     $nom = $_POST["nomInsc"];
+//     $prenom = $_POST["prenomInsc"];
+//     $email = $_POST["emailInsc"];
+//     $mdp = $_POST["mdpInsc"];
     
-    if (!empty($email) && !empty($mdp) && !empty($nom) && !empty($prenom)) {
-        $query = "INSERT INTO utilisateurs ( emailUtl,mdpUtl,nomUtl,prenomUtl) VALUES ('$email','$mdp','$nom','$prenom')";
-        $result = $conn->query($query);
-        if($result){
-            $lastUserId = $conn->insert_id;
-            header("Location: role.php?id=$lastUserId");
-        }
-    } else 
-        echo "<script>alert('Remplir tous les champs')</script>";
+//     if (!empty($email) && !empty($mdp) && !empty($nom) && !empty($prenom)) {
+//         $query = "INSERT INTO utilisateurs ( emailUtl,mdpUtl,nomUtl,prenomUtl) VALUES ('$email','$mdp','$nom','$prenom')";
+//         $result = $conn->query($query);
+//         if($result){
+//             $lastUserId = $conn->insert_id;
+//             header("Location: role.php?id=$lastUserId");
+//         }
+//     } else 
+//         echo "<script>alert('Remplir tous les champs')</script>";
    
-}
+// }
+
 
 
 
