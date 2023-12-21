@@ -22,7 +22,7 @@ $obj = new User();
 if ($obj->checkmail($Email)){
     $obj->signup($Fname, $Usrname, $Email, $Pwd, $role);
 
-    header('Location: login.php';)
+    header('Location: ../login.php');
 }
 
 ?>

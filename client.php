@@ -1,14 +1,14 @@
 <?php
-include 'config.php';
-$sqlstore = "SELECT * from plante JOIN categorie where plante.id_cat = categorie.id";
-$resultstore = mysqli_query($conn, $sqlstore);
-session_start();
-if ($_SESSION['status'] != 'client') {
-    header('Location: index.php');
-}
+// include 'config.php';
+// $sqlstore = "SELECT * from plante JOIN categorie where plante.id_cat = categorie.id";
+// $resultstore = mysqli_query($conn, $sqlstore);
+// session_start();
+// if ($_SESSION['status'] != 'client') {
+//     header('Location: index.php');
+// }
 
 
-$i = 0;
+// $i = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -121,20 +121,9 @@ $i = 0;
                                 <a class="inline-block no-underline hover:text-black" href="#">
                                     <select name="select" id="category"
                                         class="border border-gray-300 text text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        Select
-                                        <?php
-
-                                        $sqlCtg = "SELECT * from categorie";
-                                        $reqCtg = mysqli_query($conn, $sqlCtg);
-                                        while ($row = mysqli_fetch_row($reqCtg)) {
-                                            ?>
-                                            <option value="<?php echo $row['0'] ?>">
-                                                <?php echo $row['1'] ?>
+                                            <option value="">
                                             </option>
-                                            <?php
-                                        }
-
-                                        ?>
+  
                                     </select>
                                 </a>
 
@@ -209,14 +198,7 @@ $i = 0;
                                 au panier</a>
                         </a>
                     </div>
-                    <?php
-                }
-
-            }
-            else {
-                while ($rowstore = mysqli_fetch_row($resultstore)) {
-
-                    ?>
+                    
                     <div class="w-40 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                         <a href="#">
                             <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $rowstore['7'] ?>">

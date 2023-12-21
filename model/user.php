@@ -40,6 +40,7 @@ class User{
         $sql->execute();
 
         if ($sql->rowCount() > 0){
+            echo 'les infos existe deja';
             return false;
         }
         return true;
