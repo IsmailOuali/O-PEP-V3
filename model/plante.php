@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+// include '../config.php';
 
 
 class Plante{
@@ -31,7 +31,7 @@ class Plante{
         $this->$prop = $value;
     }
 
-    public function showplantes(){
+    public static function showplantes(){
 
         $sql = DBconnection::connection()->prepare("SELECT * FROM plante");
         $sql->execute();
@@ -45,9 +45,26 @@ class Plante{
             $p = new Plante($row['nom'], $row['Origine'], $row['Taille'], $row['Température'], $row['Prix'], $row['id_cat'], $row['img']);
 
             array_push($plantes, $p);
-
+            
         }
        
+        return $plantes;
+    }
+
+    public function searchplantes($plante){
+        $sql = DBconnection::connection()->prepare("SELECT * FROM plante WHERE nom like '%$plante%'");
+        $sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        
+        $plantes = array();
+
+        foreach($result as $row){
+            
+            $p = new Plante($row['nom'], $row['Origine'], $row['Taille'], $row['Température'], $row['Prix'], $row['id_cat'], $row['img']);
+
+            array_push($plantes, $p);
+
+        }
         return $p;
     }
 }

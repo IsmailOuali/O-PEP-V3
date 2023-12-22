@@ -1,14 +1,8 @@
 <?php
-// include 'config.php';
-// $sqlstore = "SELECT * from plante JOIN categorie where plante.id_cat = categorie.id";
-// $resultstore = mysqli_query($conn, $sqlstore);
-// session_start();
-// if ($_SESSION['status'] != 'client') {
-//     header('Location: index.php');
-// }
+include './model/plante.php';
+include 'config.php';
 
 
-// $i = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,94 +134,52 @@
                     </div>
                 </div>
 
-            <?php
+                
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-3/4 m-auto">
+                <?php
 
-
-            if (@$_POST['filter']) {
-                $catid = $_POST['select'];
-                $sqlshowcat = "SELECT * from plante where id_cat = $catid";
-                $reqshowcat = mysqli_query($conn, $sqlshowcat);
-                if (!$reqshowcat) {
-                    die('Error');
-                }
-
-                while ($showcat = mysqli_fetch_assoc($reqshowcat)) {
-                    ?>
-                    <div class="w-3/5 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-                        <a href="#">
-                            <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $showcat['img'] ?>">
-                            <div class="pt-3 flex items-center justify-between">
-                                <p class="">
-                                    <?php echo $showcat['nom'] ?>
-                                </p>
-                                <p class="pt-1 text-gray-900">$
-                                    <?php echo $showcat['Prix'] ?>
-                                </p>
-                                <a href="panier.php?id=<?php echo $rowstore['0'] ?>"
-                                class="w-3/5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Ajouter
-                                au panier</a>
-                        </a>
-                    </div>
-                    <?php
-                }
-
-
-            }
-            else if (@$_POST['Search']) {
-                $input = $_POST['searchinput'];
-                $sql = "SELECT * from plante where nom like '%$input%'";
-                $reqsearch = mysqli_query($conn, $sql);
-                if (!$reqsearch) {
-                    die;
-                }
-                while ($result = mysqli_fetch_row($reqsearch)) {
-                    ?>
-                    <div class="w-40 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-                        <a href="#">
-                            <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $result['7'] ?>">
-                            <div class="pt-3 flex items-center justify-between">
-                                <p class="">
-                                    <?php echo $result['1'] ?>
-                                </p>
-                            </div>
-                            <p class="pt-1 text-gray-900">$
-                                <?php echo $result['5'] ?>
-                            </p>
-                            <a href="panier.php?id=<?php echo $result[0] ?>"
-                                class="w-3/5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Ajouter
-                                au panier</a>
-                        </a>
-                    </div>
+                    $arr = array();
+                    $arr = Plante::showplantes();
                     
-                    <div class="w-40 md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-                        <a href="#">
-                            <img class="w-full hover:grow hover:shadow-lg" src="images/<?php echo $rowstore['7'] ?>">
-                            <div class="pt-3 flex items-center justify-between">
-                                <p class="">
-                                    <?php echo $rowstore['1'] ?>
-                                </p>
-                                <p>
-                                    <?php echo $rowstore['9'] ?>
-                                </p>
-                            </div>
-                            <p class="pt-1 text-gray-900">$
-                                <?php echo $rowstore['5'] ?>
-                            </p>
-                            <a href="panier.php?id=<?php echo $rowstore['0'] ?>"
-                                class="w-3/5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Ajouter
-                                au panier</a>
+                    foreach ($arr as $row){
+                       
+                        
+                        ?>
+                  
+                        
+
+    <div>
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="#">
+                    <img class="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" />
+                </a>
+                <div class="p-5">
+                    <a href="#">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?php echo $row->__get("nom") ?></h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo  $row->__get("Origine") ?></p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">$<?php echo $row->__get("Prix") ?></p>
+                    <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Ajouter au panier
+                    </a>
+                </div>
+            </div>
+
+    </div>
+    
 
 
+                                
+                                
+                           <?php
+                            }
+                            ?>
+</div>
+
+                    
 
 
-                        </a>
                     </div>
-                    <?php
-                }
-                $i += 1;
-            }
-            ?>
-
         </div>
 
     </section>

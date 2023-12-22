@@ -1,15 +1,4 @@
-<?php
-include 'config.php';
-if (@$_POST['Addcategory']) {
-    $Categoryname = $_POST['Categoryname'];
 
-    $sqlcat = "INSERT into categorie (nom) values ('$Categoryname')";
-    $reqcat = mysqli_query($conn, $sqlcat);
-    header('Location: categorie-admin.php');
-
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +13,7 @@ if (@$_POST['Addcategory']) {
 <body>
     <div>
 
-        <form action="#" method="post">
+        <form action="controller/categorie.php" method="post">
             <div class="pt-20 flex justify-center items-center sm:col-span-2">
                 <div class="w-3/5  sm:col-span-2">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
@@ -49,27 +38,20 @@ if (@$_POST['Addcategory']) {
                     </th>
                 </thead>
     </tr>
-    <?php
-    $sqlcat2 = "SELECT * from categorie";
-    $reqcat2 = mysqli_query($conn, $sqlcat2);
 
-    while ($rowcat = mysqli_fetch_row($reqcat2)) {
-
-        ?>
         <tbody>
 
             <tr
                 class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?php echo $rowcat['1']; ?>
+                   
                 </td>
                 <td class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                     |
-                    <a href="sup-cat.php?id=<?php echo $rowcat['0'] ?>">Supprimer</a>
+                    <a href>Supprimer</a>
                     |   
                 </td>
                 <?php
-    }
     ?>
         </tr>
     </tbody>
