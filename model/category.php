@@ -1,6 +1,6 @@
 <?php
 
-include '../config.php';
+// include '../config.php';
 
 
 class categorie{
@@ -28,6 +28,31 @@ class categorie{
         $req->bindParam(':nom_cat', $this->nom_cat);
         $req->execute();
     }
-}
 
+    public static function showcategory(){
+        $req = DBconnection::connection()->query("SELECT * FROM categorie");
+        $req->execute();
+
+        $result = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        $ar = array();
+        foreach($result as $row){
+            $c = new categorie($row['id'], $row['nom']);
+            array_push($ar, $c);
+
+
+        }
+        return $ar;
+
+    }
+
+    public function deletecategory(){
+        
+        $req = DBconnection::connection()->prepare("DELETE FROM categorie WHERE id = :id_cat");
+        $req->bindParam(':id_cat', $this->id_cat);
+        $req->execute();
+
+    }
+
+}
 ?>

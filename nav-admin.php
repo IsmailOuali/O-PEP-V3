@@ -1,7 +1,4 @@
 
-<?php
-include 'config.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,31 +69,20 @@ include 'config.php';
 
             <!-- main content page -->
             <div class="w-full text-center bg-[#79B068]">
-                <?php
-                $sqlcount = "SELECT COUNT(*) as total FROM users";
-                $reqcount = mysqli_query($conn, $sqlcount);
-
-                $total = mysqli_fetch_assoc($reqcount);
-                ?>
+                
                 <div class="nbrclient block antialiased font-sans text-2xl leading-normal font-normal text-blue-gray-600">
                     <p>Nombre de client:</p><br>
                     <p class="text-2xl">
-                        <?php echo $total['total'] ?>
+                        
                     </p>
 
                 </div>
                 <div class="nbrplantes text-2xl">
 
-                    <?php
-                    $sqlcountp = "SELECT COUNT(*) as totalp FROM plante";
-                    $reqcountp = mysqli_query($conn, $sqlcountp);
-
-                    $totalp = mysqli_fetch_assoc($reqcountp);
-
-                    ?>
+                    
                     <p>Nombre de plantes:</p><br>
                     <p>
-                        <?php echo $totalp['totalp'] ?>
+                        
                     </p>
 
                 </div>

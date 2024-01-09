@@ -114,10 +114,10 @@ include 'config.php';
                             <div class="selectclass p-5">
                                 <a class="inline-block no-underline hover:text-black" href="#">
                                     <select name="select" id="category"
-                                        class="border border-gray-300 text text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="">
-                                            </option>
-  
+                                        class="border border-gray-300 text text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">   
+                                        <option value="">
+                                        </option>
+
                                     </select>
                                 </a>
 
@@ -125,6 +125,7 @@ include 'config.php';
                                     class="text-white bg-green-700 mt-1 hover:bg-green-800 rounded-full text-sm px-5 py-2.5 text-center"
                                     type="submit" value="filter" name="filter">
                             </div>
+                        
                         </form>
                         <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
                             href="#">
@@ -140,6 +141,14 @@ include 'config.php';
 
                     $arr = array();
                     $arr = Plante::showplantes();
+                    
+                    if(isset($_POST['Search'])){
+                        $fil = $_POST['searchinput'];
+                        $arr = Plante::searchplantes($fil);
+                        
+
+                      
+                    }
                     
                     foreach ($arr as $row){
                        
@@ -159,7 +168,7 @@ include 'config.php';
                     </a>
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo  $row->__get("Origine") ?></p>
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">$<?php echo $row->__get("Prix") ?></p>
-                    <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-lime-800 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-lime-800 dark:focus:ring-blue-800">
                         Ajouter au panier
                     </a>
                 </div>

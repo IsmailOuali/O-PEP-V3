@@ -1,4 +1,8 @@
+<?php
 
+include 'config.php';
+include 'model/category.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,18 +44,25 @@
     </tr>
 
         <tbody>
+                <?php
+                $a = array();
+                $a = categorie::showcategory();
+                foreach($a as $r){
 
+                    ?>
             <tr
                 class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                   
-                </td>
-                <td class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    |
-                    <a href>Supprimer</a>
-                    |   
-                </td>
-                <?php
+                    <?php echo $r->__get('nom_cat') ?>
+                    </td>
+                    <td class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        |
+                        <a href="controller/sup-cat.php?id=<?php echo $r->__get('id_cat') ?>">Supprimer</a>
+                        |   
+                    </td>
+                    <?php
+                }
     ?>
         </tr>
     </tbody>

@@ -9,6 +9,7 @@ $name = $_POST['Categoryname'];
 $c = new categorie(NULL, $name);
 
 $c->addcategorie();
+header('Location: ../categorie-admin.php');
 
 
 

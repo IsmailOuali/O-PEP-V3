@@ -51,7 +51,7 @@ class Plante{
         return $plantes;
     }
 
-    public function searchplantes($plante){
+    public static function searchplantes($plante){
         $sql = DBconnection::connection()->prepare("SELECT * FROM plante WHERE nom like '%$plante%'");
         $sql->execute();
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -64,9 +64,12 @@ class Plante{
 
             array_push($plantes, $p);
 
+
         }
         return $p;
     }
 }
+
+
 ?>
 

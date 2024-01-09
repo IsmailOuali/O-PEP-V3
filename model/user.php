@@ -57,6 +57,7 @@ class User{
            
         }else{
             $result = $sql->fetch(PDO::FETCH_ASSOC);
+            $this->role = $result['role'];
             if($result['role'] == 1){
                 header('Location: ../nav-admin.php');
             }
@@ -68,5 +69,5 @@ class User{
 
       
     }
+    
 }
-?>
